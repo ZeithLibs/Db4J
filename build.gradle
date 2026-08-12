@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'dev.zeith.libs'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+//    implementation "org.xerial:sqlite-jdbc:$sqlite"
+
+    compileOnly("org.projectlombok:lombok:$lombok")
+    annotationProcessor("org.projectlombok:lombok:$lombok")
+    testCompileOnly("org.projectlombok:lombok:$lombok")
+    testAnnotationProcessor("org.projectlombok:lombok:$lombok")
+}
+
+tasks.register('srcJar', Jar) {
+    dependsOn classes
+    from sourceSets.main.allSource
+    archiveClassifier = 'sources'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'dev.zeith.libs'
+            artifactId = 'Db4J'
+            from components.java
+
+            pom {
+                name = 'Db4J'
+                description = 'Collection of JDBC wrappers for easier and safer communication with databases.'
+            }
+
+            artifact srcJar
+        }
+    }
+    repositories {
+        maven {
+            url System.env.MAVEN_URL
+        }
+    }
+}
