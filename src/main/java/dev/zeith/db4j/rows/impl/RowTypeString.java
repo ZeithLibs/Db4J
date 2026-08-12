@@ -1,6 +1,6 @@
 package dev.zeith.db4j.rows.impl;
 
-import dev.zeith.db4j.data.SQLDataType;
+import dev.zeith.db4j.data.ISQLDataType;
 import dev.zeith.db4j.rows.RowType;
 
 import java.sql.*;
@@ -8,7 +8,7 @@ import java.sql.*;
 public class RowTypeString
 		extends RowType<String>
 {
-	public RowTypeString(SQLDataType type)
+	public RowTypeString(ISQLDataType type)
 	{
 		super(type, String.class);
 	}

@@ -1,6 +1,6 @@
 package dev.zeith.db4j.rows.impl;
 
-import dev.zeith.db4j.data.SQLDataType;
+import dev.zeith.db4j.data.*;
 import dev.zeith.db4j.rows.RowType;
 
 import java.sql.*;
@@ -8,9 +8,9 @@ import java.sql.*;
 public class RowTypeBlob
 		extends RowType<byte[]>
 {
-	public RowTypeBlob()
+	public RowTypeBlob(ISQLDataType type)
 	{
-		super(SQLDataType.BLOB, byte[].class);
+		super(type, byte[].class);
 	}
 	
 	@Override
