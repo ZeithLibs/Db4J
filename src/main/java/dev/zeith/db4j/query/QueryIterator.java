@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.NoSuchElementException;
 
 public class QueryIterator
-		implements CloseableIterator<QueryEntry>
+		implements SqlIterator<QueryEntry>
 {
 	private ResultSet set;
 	private boolean hasNext;
