@@ -25,10 +25,10 @@ public class DatabaseTable
 		this(name, Arrays.asList(rows));
 	}
 	
-	public DatabaseTable(String name, List<TableRow<? extends Object>> rows)
+	public DatabaseTable(String name, List<TableRow<?>> rows)
 	{
 		this.name = name;
-		this.rows = rows.stream().collect(Collectors.toList());
+		this.rows = new ArrayList<>(rows);
 		this.rowsByName = this.rows.stream().collect(Collectors.toMap(e -> e.name, UnaryOperator.identity()));
 		this.rowsByNameUnmod = Collections.unmodifiableMap(this.rowsByName);
 	}
@@ -38,6 +38,37 @@ public class DatabaseTable
 	{
 		createIfNotExistCore();
 		alterColumns();
+		createIndices();
+	}
+	
+	protected void createIndices()
+			throws SQLException
+	{
+//		createIndexIfNotExists("ft_project_name", """
+//				ADD FULLTEXT INDEX ft_project_name (%s);
+//				""".formatted(MyTable.UID.name)
+//		);
+	}
+	
+	protected void createIndexIfNotExists(String indexName, String stmt)
+			throws SQLException
+	{
+		var conn = db.getSession().getConnection();
+		DatabaseMetaData meta = conn.getMetaData();
+		String cat = conn.getCatalog();
+		String schema = conn.getSchema();
+		
+		try(ResultSet rs = meta.getIndexInfo(cat, schema, getName(), false, false))
+		{
+			while(rs.next())
+				if(indexName.equals(rs.getString("INDEX_NAME")))
+					return;
+		}
+		
+		try(var s = conn.prepareStatement("ALTER TABLE " + getName() + "\n" + stmt))
+		{
+			s.executeUpdate();
+		}
 	}
 	
 	protected void createIfNotExistCore()
