@@ -34,4 +34,9 @@ public class RowTypes
 	
 	public static final RowTypeUUIDAsBlob UUID_AS_BLOB = new RowTypeUUIDAsBlob();
 	public static final RowTypeUUIDAsBinary UUID_AS_BINARY = new RowTypeUUIDAsBinary();
+	
+	public static <E extends Enum<E>> RowType<E> forEnum(Class<E> type)
+	{
+		return new RowTypeEnum<>(RowTypeEnum.forLength(type.getEnumConstants().length), type);
+	}
 }
