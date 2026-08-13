@@ -25,4 +25,15 @@ public class UUIDv7
 		final long lsb = (rng.nextLong() & 0x3FFF_FFFF_FFFF_FFFFL) | 0x8000_0000_0000_0000L;
 		return new UUID(msb, lsb);
 	}
+	
+	public static long timestampMillis(final UUID uuid)
+	{
+		if(uuid.version() != 7) throw new IllegalArgumentException("UUID is not a UUIDv7: " + uuid);
+		return uuid.getMostSignificantBits() >>> 16;
+	}
+	
+	public static Instant timestamp(final UUID uuid)
+	{
+		return Instant.ofEpochMilli(timestampMillis(uuid));
+	}
 }
