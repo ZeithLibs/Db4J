@@ -5,6 +5,7 @@ import java.sql.Types;
 public enum SQLDataType
 		implements ISQLDataType
 {
+	BYTE("TINYINT", Types.TINYINT, "A tiny integer. Signed range is from -128 to 127. Unsigned range is from 0 to 255."),
 	SHORT("SMALLINT", Types.SMALLINT, "A small integer. Signed range is from -32768 to 32767. Unsigned range is from 0 to 65535."),
 	INT("INTEGER", Types.INTEGER, "A medium integer. Signed range is from -2147483648 to 2147483647. Unsigned range is from 0 to 4294967295."),
 	REAL("REAL", Types.REAL, "32-bit float"),

@@ -17,6 +17,7 @@ public class RowTypes
 	public static final RowTypeFloat FLOAT = new RowTypeFloat();
 	public static final RowTypeDouble DOUBLE = new RowTypeDouble();
 	public static final RowTypeBool BOOLEAN = new RowTypeBool();
+	public static final RowTypeByte TINY_INT = new RowTypeByte();
 	public static final RowTypeShort SMALL_INT = new RowTypeShort();
 	public static final RowTypeInt INT = new RowTypeInt();
 	public static final RowTypeLong BIG_INT = new RowTypeLong();
