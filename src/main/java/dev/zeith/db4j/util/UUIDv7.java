@@ -1,5 +1,6 @@
 package dev.zeith.db4j.util;
 
+import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -10,6 +11,11 @@ public class UUIDv7
 	public static UUID randomUUID()
 	{
 		return randomUUID(System.currentTimeMillis());
+	}
+	
+	public static UUID randomUUID(final Instant timestamp)
+	{
+		return randomUUID(timestamp.toEpochMilli());
 	}
 	
 	public static UUID randomUUID(final long timestamp)
