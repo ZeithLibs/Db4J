@@ -11,8 +11,7 @@ public class RowTypes
 	public static final RowTypeString TEXT = new RowTypeString(SQLDataType.TEXT);
 	public static final RowTypeString MEDIUM_TEXT = new RowTypeString(SQLDataType.MEDIUM_TEXT);
 	public static final RowTypeString LONG_TEXT = new RowTypeString(SQLDataType.LONG_TEXT);
-	public static final RowTypeString VARCHAR = new RowTypeString(SQLDataType.VARCHAR);
-	public static final RowTypeString VARCHAR_32 = new RowTypeString(SQLDataType.VARCHAR.withLength(32));
+	public static final RowTypeString VARCHAR_32 = varchar(32);
 	
 	public static final RowTypeFloat FLOAT = new RowTypeFloat();
 	public static final RowTypeDouble DOUBLE = new RowTypeDouble();
@@ -27,7 +26,7 @@ public class RowTypes
 	
 	// ADVANCED TYPES
 	
-	public static final RowTypeBlob BLOB = new RowTypeBlob(SQLDataType.BLOB);
+	public static final RowTypeBytes BLOB = new RowTypeBytes(SQLDataType.BLOB);
 	
 	public static final RowTypeInstantMsPrecision INSTANT = new RowTypeInstantMsPrecision();
 	public static final RowTypeInstantSecPrecision INSTANT_WITH_SECOND_PRECISION = new RowTypeInstantSecPrecision();
@@ -38,5 +37,15 @@ public class RowTypes
 	public static <E extends Enum<E>> RowType<E> forEnum(Class<E> type)
 	{
 		return new RowTypeEnum<>(RowTypeEnum.forLength(type.getEnumConstants().length), type);
+	}
+	
+	public static RowTypeString varchar(int length)
+	{
+		return new RowTypeString(SQLDataType.VARCHAR.withLength(length));
+	}
+	
+	public static RowType<byte[]> binary(int length)
+	{
+		return new RowTypeBytes(SQLDataType.BINARY.withLength(length));
 	}
 }

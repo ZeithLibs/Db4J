@@ -5,10 +5,10 @@ import dev.zeith.db4j.rows.RowType;
 
 import java.sql.*;
 
-public class RowTypeBlob
+public class RowTypeBytes
 		extends RowType<byte[]>
 {
-	public RowTypeBlob(ISQLDataType type)
+	public RowTypeBytes(ISQLDataType type)
 	{
 		super(type, byte[].class);
 	}
