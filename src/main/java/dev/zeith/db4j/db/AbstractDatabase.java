@@ -42,7 +42,15 @@ public abstract class AbstractDatabase
 			throws SQLException
 	{
 		for(DatabaseTable t : tables)
-			t.createIfNotExist();
+		{
+			try
+			{
+				t.createIfNotExist();
+			} catch(SQLException e)
+			{
+				throw new SQLException("Failed to create DatabaseTable(" + t.getName() + ")", e);
+			}
+		}
 	}
 	
 	public IDatabaseSession getSession()

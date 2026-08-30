@@ -61,6 +61,16 @@ public class QueryFilter
 		return qf;
 	}
 	
+	public QueryFilter negate()
+	{
+		QueryFilter qf = copy();
+		
+		if(!query.isEmpty())
+			qf.query = "NOT (" + query + ")";
+		
+		return qf;
+	}
+	
 	public String toSQLString()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -242,6 +252,33 @@ public class QueryFilter
 		QueryFilter qf = copy();
 		qf.query = query + (query.isEmpty() ? "" : " " + logic.name() + " ") + row.name + " IS NULL";
 		return qf;
+	}
+	
+	public QueryFilter whereIsNotNull(TableRow<?> row, LogicMode logic)
+	{
+		QueryFilter qf = copy();
+		qf.query = query + (query.isEmpty() ? "" : " " + logic.name() + " ") + row.name + " IS NOT NULL";
+		return qf;
+	}
+	
+	public QueryFilter whereIsNullAND(TableRow<?> row)
+	{
+		return whereIsNull(row, LogicMode.AND);
+	}
+	
+	public QueryFilter whereIsNullOR(TableRow<?> row)
+	{
+		return whereIsNull(row, LogicMode.OR);
+	}
+	
+	public QueryFilter whereIsNotNullAND(TableRow<?> row)
+	{
+		return whereIsNotNull(row, LogicMode.AND);
+	}
+	
+	public QueryFilter whereIsNotNullOR(TableRow<?> row)
+	{
+		return whereIsNotNull(row, LogicMode.OR);
 	}
 	
 	public <DATA> QueryFilter whereLike(TableRow<String> row, String pattern, LogicMode logic, LikeMode likeMode, boolean sanitizeWildcard)

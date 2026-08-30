@@ -12,6 +12,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.*;
 
 public class DatabaseTable
+	implements IDatabaseTableFunctions
 {
 	private AbstractDatabase db;
 	
@@ -156,6 +157,7 @@ public class DatabaseTable
 		return imap;
 	}
 	
+	@Override
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void insert(IDatabaseSession session, Map<TableRow<?>, ?> data)
 			throws SQLException
@@ -188,6 +190,7 @@ public class DatabaseTable
 		}
 	}
 	
+	@Override
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void batchInsert(IDatabaseSession session, List<InsertMap> data)
 			throws SQLException
@@ -243,6 +246,7 @@ public class DatabaseTable
 		return stmt;
 	}
 	
+	@Override
 	public ResultSet query(IDatabaseSession session, QueryFilter filter)
 			throws SQLException
 	{
@@ -258,6 +262,7 @@ public class DatabaseTable
 		}
 	}
 	
+	@Override
 	public long count(IDatabaseSession session, QueryFilter filter)
 			throws SQLException
 	{
@@ -273,6 +278,7 @@ public class DatabaseTable
 		}
 	}
 	
+	@Override
 	public int delete(IDatabaseSession session, QueryFilter filter)
 			throws SQLException
 	{
@@ -282,6 +288,7 @@ public class DatabaseTable
 		return stmt.executeUpdate();
 	}
 	
+	@Override
 	public <T> int updateSet(IDatabaseSession session, TableRow<T> row, T data, QueryFilter filter)
 			throws SQLException
 	{
@@ -293,6 +300,7 @@ public class DatabaseTable
 		}
 	}
 	
+	@Override
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public int updateSet(IDatabaseSession session, InsertMap map, QueryFilter filter)
 			throws SQLException
@@ -313,12 +321,7 @@ public class DatabaseTable
 		}
 	}
 	
-	public QueryIterator queryEntries(IDatabaseSession session, QueryFilter filter)
-			throws SQLException
-	{
-		return entries(query(session, filter));
-	}
-	
+	@Override
 	public QueryIterator entries(ResultSet set)
 			throws SQLException
 	{
