@@ -16,9 +16,9 @@ public class RowTypeDate extends RowType<Date>
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int columnIndex, Date value) throws SQLException
+	public void set(PreparedStatement statement, int parameterIndex, Date value) throws SQLException
 	{
-		statement.setDate(columnIndex, value);
+		statement.setDate(parameterIndex, value);
 	}
 	
 	@Override

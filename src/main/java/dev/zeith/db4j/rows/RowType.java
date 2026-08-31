@@ -17,7 +17,7 @@ public abstract class RowType<DATA>
 		this.javaType = javaType;
 	}
 	
-	public abstract void set(PreparedStatement statement, int columnIndex, DATA value)
+	public abstract void set(PreparedStatement statement, int parameterIndex, DATA value)
 			throws SQLException;
 	
 	public abstract DATA get(ResultSet set, int columnIndex)

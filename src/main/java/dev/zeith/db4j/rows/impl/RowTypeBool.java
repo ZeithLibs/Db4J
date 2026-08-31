@@ -14,13 +14,13 @@ public class RowTypeBool
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int paremeterIndex, Boolean value)
+	public void set(PreparedStatement statement, int parameterIndex, Boolean value)
 			throws SQLException
 	{
 		if(value == null)
-			statement.setNull(paremeterIndex, type.getSqlType());
+			statement.setNull(parameterIndex, type.getSqlType());
 		else
-			statement.setBoolean(paremeterIndex, value);
+			statement.setBoolean(parameterIndex, value);
 	}
 	
 	@Override

@@ -16,9 +16,9 @@ public class RowTypeTimestamp extends RowType<Timestamp>
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int columnIndex, Timestamp value) throws SQLException
+	public void set(PreparedStatement statement, int parameterIndex, Timestamp value) throws SQLException
 	{
-		statement.setTimestamp(columnIndex, value);
+		statement.setTimestamp(parameterIndex, value);
 	}
 	
 	@Override

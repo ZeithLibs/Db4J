@@ -14,13 +14,13 @@ public class RowTypeShort
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int paremeterIndex, Short value)
+	public void set(PreparedStatement statement, int parameterIndex, Short value)
 			throws SQLException
 	{
 		if(value == null)
-			statement.setNull(paremeterIndex, type.getSqlType());
+			statement.setNull(parameterIndex, type.getSqlType());
 		else
-			statement.setShort(paremeterIndex, value);
+			statement.setShort(parameterIndex, value);
 	}
 	
 	@Override

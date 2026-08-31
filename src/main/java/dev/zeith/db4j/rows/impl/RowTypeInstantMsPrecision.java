@@ -15,13 +15,13 @@ public class RowTypeInstantMsPrecision
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int paremeterIndex, Instant value)
+	public void set(PreparedStatement statement, int parameterIndex, Instant value)
 			throws SQLException
 	{
 		if(value == null)
-			statement.setNull(paremeterIndex, type.getSqlType());
+			statement.setNull(parameterIndex, type.getSqlType());
 		else
-			statement.setLong(paremeterIndex, value.toEpochMilli());
+			statement.setLong(parameterIndex, value.toEpochMilli());
 	}
 	
 	@Override

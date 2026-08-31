@@ -14,13 +14,13 @@ public class RowTypeInt
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int paremeterIndex, Integer value)
+	public void set(PreparedStatement statement, int parameterIndex, Integer value)
 			throws SQLException
 	{
 		if(value == null)
-			statement.setNull(paremeterIndex, type.getSqlType());
+			statement.setNull(parameterIndex, type.getSqlType());
 		else
-			statement.setInt(paremeterIndex, value);
+			statement.setInt(parameterIndex, value);
 	}
 	
 	@Override

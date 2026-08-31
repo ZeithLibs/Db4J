@@ -14,13 +14,13 @@ public class RowTypeLong
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int paremeterIndex, Long value)
+	public void set(PreparedStatement statement, int parameterIndex, Long value)
 			throws SQLException
 	{
 		if(value == null)
-			statement.setNull(paremeterIndex, type.getSqlType());
+			statement.setNull(parameterIndex, type.getSqlType());
 		else
-			statement.setLong(paremeterIndex, value);
+			statement.setLong(parameterIndex, value);
 	}
 	
 	@Override

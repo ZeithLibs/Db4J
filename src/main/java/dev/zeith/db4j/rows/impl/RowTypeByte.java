@@ -14,13 +14,13 @@ public class RowTypeByte
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int paremeterIndex, Byte value)
+	public void set(PreparedStatement statement, int parameterIndex, Byte value)
 			throws SQLException
 	{
 		if(value == null)
-			statement.setNull(paremeterIndex, type.getSqlType());
+			statement.setNull(parameterIndex, type.getSqlType());
 		else
-			statement.setByte(paremeterIndex, value);
+			statement.setByte(parameterIndex, value);
 	}
 	
 	@Override

@@ -14,13 +14,13 @@ public class RowTypeDouble
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int paremeterIndex, Double value)
+	public void set(PreparedStatement statement, int parameterIndex, Double value)
 			throws SQLException
 	{
 		if(value == null)
-			statement.setNull(paremeterIndex, type.getSqlType());
+			statement.setNull(parameterIndex, type.getSqlType());
 		else
-			statement.setDouble(paremeterIndex, value);
+			statement.setDouble(parameterIndex, value);
 	}
 	
 	@Override

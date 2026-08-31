@@ -14,10 +14,10 @@ public class RowTypeString
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int paremeterIndex, String value)
+	public void set(PreparedStatement statement, int parameterIndex, String value)
 			throws SQLException
 	{
-		statement.setString(paremeterIndex, value);
+		statement.setString(parameterIndex, value);
 	}
 	
 	@Override

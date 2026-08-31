@@ -19,30 +19,30 @@ public class RowTypeEnum<E extends Enum<E>>
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int columnIndex, E value)
+	public void set(PreparedStatement statement, int parameterIndex, E value)
 			throws SQLException
 	{
 		if(value == null)
 		{
-			statement.setNull(columnIndex, type.getSqlType());
+			statement.setNull(parameterIndex, type.getSqlType());
 			return;
 		}
 		
 		if(this.type == SQLDataType.BYTE)
 		{
-			statement.setByte(columnIndex, (byte) value.ordinal());
+			statement.setByte(parameterIndex, (byte) value.ordinal());
 			return;
 		}
 		
 		if(this.type == SQLDataType.SHORT)
 		{
-			statement.setShort(columnIndex, (short) value.ordinal());
+			statement.setShort(parameterIndex, (short) value.ordinal());
 			return;
 		}
 		
 		if(this.type == SQLDataType.INT)
 		{
-			statement.setInt(columnIndex, value.ordinal());
+			statement.setInt(parameterIndex, value.ordinal());
 			return;
 		}
 	}

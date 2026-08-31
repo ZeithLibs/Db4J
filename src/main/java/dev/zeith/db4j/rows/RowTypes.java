@@ -2,6 +2,9 @@ package dev.zeith.db4j.rows;
 
 import dev.zeith.db4j.data.SQLDataType;
 import dev.zeith.db4j.rows.impl.*;
+import dev.zeith.db4j.util.ULID;
+
+import java.util.UUID;
 
 public class RowTypes
 {
@@ -11,7 +14,15 @@ public class RowTypes
 	public static final RowTypeString TEXT = new RowTypeString(SQLDataType.TEXT);
 	public static final RowTypeString MEDIUM_TEXT = new RowTypeString(SQLDataType.MEDIUM_TEXT);
 	public static final RowTypeString LONG_TEXT = new RowTypeString(SQLDataType.LONG_TEXT);
+	
+	public static final RowTypeString VARCHAR_16 = varchar(16);
+	public static final RowTypeString VARCHAR_26 = varchar(26);
 	public static final RowTypeString VARCHAR_32 = varchar(32);
+	public static final RowTypeString VARCHAR_64 = varchar(64);
+	public static final RowTypeString VARCHAR_96 = varchar(96);
+	public static final RowTypeString VARCHAR_128 = varchar(128);
+	public static final RowTypeString VARCHAR_256 = varchar(256);
+	public static final RowTypeString VARCHAR_512 = varchar(512);
 	
 	public static final RowTypeFloat FLOAT = new RowTypeFloat();
 	public static final RowTypeDouble DOUBLE = new RowTypeDouble();
@@ -33,6 +44,7 @@ public class RowTypes
 	
 	public static final RowTypeUUIDAsBlob UUID_AS_BLOB = new RowTypeUUIDAsBlob();
 	public static final RowTypeUUIDAsBinary UUID_AS_BINARY = new RowTypeUUIDAsBinary();
+	public static final RowType<UUID> UUID_AS_ULID_VARCHAR = VARCHAR_26.map(UUID.class, ULID::parse, ULID::toString);
 	
 	public static <E extends Enum<E>> RowType<E> forEnum(Class<E> type)
 	{
@@ -42,6 +54,11 @@ public class RowTypes
 	public static RowTypeString varchar(int length)
 	{
 		return new RowTypeString(SQLDataType.VARCHAR.withLength(length));
+	}
+	
+	public static RowTypeString text(int length)
+	{
+		return new RowTypeString(SQLDataType.TEXT.withLength(length));
 	}
 	
 	public static RowType<byte[]> binary(int length)

@@ -14,13 +14,13 @@ public class RowTypeFloat
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int paremeterIndex, Float value)
+	public void set(PreparedStatement statement, int parameterIndex, Float value)
 			throws SQLException
 	{
 		if(value == null)
-			statement.setNull(paremeterIndex, type.getSqlType());
+			statement.setNull(parameterIndex, type.getSqlType());
 		else
-			statement.setFloat(paremeterIndex, value);
+			statement.setFloat(parameterIndex, value);
 	}
 	
 	@Override

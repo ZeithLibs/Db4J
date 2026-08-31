@@ -21,10 +21,10 @@ public class RowTypeMapped<SRC, DST>
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int columnIndex, DST value)
+	public void set(PreparedStatement statement, int parameterIndex, DST value)
 			throws SQLException
 	{
-		src.set(statement, columnIndex, unmapper.apply(value));
+		src.set(statement, parameterIndex, unmapper.apply(value));
 	}
 	
 	@Override
