@@ -1,7 +1,7 @@
 package dev.zeith.db4j.rows;
 
 import dev.zeith.db4j.data.ISQLDataType;
-import dev.zeith.db4j.rows.impl.RowTypeMapped;
+import dev.zeith.db4j.rows.impl.*;
 
 import java.sql.*;
 import java.util.function.Function;
@@ -29,5 +29,10 @@ public abstract class RowType<DATA>
 	public <NEW> RowType<NEW> map(Class<NEW> targetType, Function<DATA, NEW> mapper, Function<NEW, DATA> unmapper)
 	{
 		return new RowTypeMapped<>(this, targetType, mapper, unmapper);
+	}
+	
+	public <NEW> RowType<NEW> mapNotNull(Class<NEW> targetType, Function<DATA, NEW> mapper, Function<NEW, DATA> unmapper)
+	{
+		return new RowTypeMappedNullChecked<>(this, targetType, mapper, unmapper);
 	}
 }
