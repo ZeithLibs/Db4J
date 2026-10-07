@@ -11,6 +11,7 @@ public class BackupApplier
 {
 	protected final Connection target;
 	protected final List<String> copiedTables = new ArrayList<>();
+	protected final String dstTable;
 	protected String catalog;
 	
 	protected final boolean writeTableData;
@@ -32,7 +33,7 @@ public class BackupApplier
 		{
 			while(tables.next())
 			{
-				if(!tables.getString("TABLE_CAT").equals("univcc")) continue;
+				if(!tables.getString("TABLE_CAT").equals(dstTable)) continue;
 				existingTables.add(tables.getString("TABLE_NAME"));
 			}
 		}

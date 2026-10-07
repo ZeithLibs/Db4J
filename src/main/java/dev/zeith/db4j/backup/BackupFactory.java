@@ -11,7 +11,7 @@ public class BackupFactory<E extends Exception>
 {
 	protected final Connection source;
 	protected final IBackupReceptor<E> target;
-	protected final String sourceTable;
+	protected final String srcTable;
 	
 	public void backup()
 			throws SQLException, E
@@ -27,7 +27,7 @@ public class BackupFactory<E extends Exception>
 		{
 			while(tables.next())
 			{
-				if(!tables.getString("TABLE_CAT").equals(sourceTable)) continue;
+				if(!tables.getString("TABLE_CAT").equals(srcTable)) continue;
 				String tableName = tables.getString("TABLE_NAME");
 				remainingTables.add(tableName);
 				System.out.println("Detected table: " + tableName);
