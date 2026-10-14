@@ -12,7 +12,7 @@ import java.util.function.UnaryOperator;
 import java.util.stream.*;
 
 public class DatabaseTable
-	implements IDatabaseTableFunctions
+		implements IDatabaseTableFunctions
 {
 	private AbstractDatabase db;
 	
@@ -20,6 +20,8 @@ public class DatabaseTable
 	protected final Map<String, TableRow<?>> rowsByName;
 	protected final Map<String, TableRow<?>> rowsByNameUnmod;
 	protected final String name;
+	
+	protected boolean reorderColumns = true;
 	
 	public DatabaseTable(String name, TableRow<?>... rows)
 	{
@@ -38,7 +40,7 @@ public class DatabaseTable
 			throws SQLException
 	{
 		createIfNotExistCore();
-		alterColumns();
+		alterColumns(reorderColumns);
 		createIndices();
 	}
 	
@@ -87,10 +89,10 @@ public class DatabaseTable
 		}
 	}
 	
-	protected void alterColumns()
+	protected void alterColumns(boolean reorder)
 			throws SQLException
 	{
-		Map<String, String> dbColumns = new HashMap<>();
+		Map<String, String> dbColumns = new LinkedHashMap<>();
 		try(PreparedStatement stmt = db.prepareStatement(db.getSession(), "SELECT * FROM " + getName() + " LIMIT 0"))
 		{
 			ResultSet set = stmt.executeQuery();
@@ -99,49 +101,104 @@ public class DatabaseTable
 				dbColumns.put(meta.getColumnLabel(i), meta.getColumnTypeName(i));
 		}
 		
-		Set<String> dbKeys = dbColumns.keySet();
-		Set<String> ourKeys = rowsByName.keySet();
-		
-		if(!dbKeys.equals(ourKeys))
+		List<String> desiredOrder = new ArrayList<>(rows.size());
+		for(TableRow<?> row : rows)
 		{
-			for(String dbk : dbKeys)
-			{
-				if(!ourKeys.contains(dbk))
-				{
-					try(PreparedStatement stmt = db.prepareStatement(db.getSession(), "ALTER TABLE " + getName() + " DROP COLUMN " + dbk))
-					{
-						stmt.execute();
-					}
-				}
-			}
+			String name = row.getName();
 			
-			for(String ourk : ourKeys)
-			{
-				if(!dbKeys.contains(ourk))
-				{
-					try(PreparedStatement stmt = db.prepareStatement(db.getSession(), "ALTER TABLE " + getName() + " ADD " + ourk + " " + rowsByName.get(ourk).getSQLTypeStr()))
-					{
-						stmt.execute();
-					}
-				}
-			}
-		} else
+			if(name == null)
+				throw new IllegalStateException(
+						"TableRow is missing from rowsByName: " + row);
+			
+			desiredOrder.add(name);
+		}
+		
+		Set<String> ourKeys = new HashSet<>(desiredOrder);
+		
+		List<String> currentOrder = new ArrayList<>(dbColumns.keySet());
+		
+		for(String dbk : dbColumns.keySet())
 		{
-			for(String dbk : dbKeys)
+			if(!ourKeys.contains(dbk))
 			{
-				String provType = dbColumns.get(dbk);
-				TableRow<?> req = rowsByName.get(dbk);
+				try(PreparedStatement stmt = db.prepareStatement(
+						db.getSession(),
+						"ALTER TABLE " + getName() + " DROP COLUMN " + dbk
+				))
+				{
+					stmt.execute();
+				}
+				
+				dbColumns.remove(dbk);
+				currentOrder.remove(dbk);
+			}
+		}
+		
+		// Handle missing columns & update types of existing ones:
+		for(String ourk : desiredOrder)
+		{
+			TableRow<?> req = rowsByName.get(ourk);
+			
+			if(!dbColumns.containsKey(ourk))
+			{
+				try(PreparedStatement stmt = db.prepareStatement(db.getSession(), "ALTER TABLE " + getName() + " ADD " + ourk + " " + req.getSQLTypeStr()))
+				{
+					stmt.execute();
+				}
+				
+				dbColumns.put(ourk, req.getSQLTypeStrNoArgs());
+				currentOrder.add(ourk);
+			} else
+			{
+				String provType = dbColumns.get(ourk);
 				String reqType = req.getSQLTypeStrNoArgs();
+				
 				if(db.log)
 					db.log("Compare table types: " + provType + " [expect " + reqType + "]");
+				
 				if(!provType.equalsIgnoreCase(reqType))
 				{
-					try(PreparedStatement stmt = db.prepareStatement(db.getSession(), "ALTER TABLE " + getName() + " MODIFY COLUMN " + dbk + " " + req.getSQLTypeStr()))
+					try(PreparedStatement stmt = db.prepareStatement(db.getSession(), "ALTER TABLE " + getName() + " MODIFY COLUMN " + ourk + " " + req.getSQLTypeStr()))
 					{
 						stmt.execute();
 					}
+					
+					dbColumns.put(ourk, reqType);
 				}
 			}
+		}
+		
+		if(!reorder) return;
+		
+		// Realign column order:
+		for(int i = 0; i < desiredOrder.size(); i++)
+		{
+			String column = desiredOrder.get(i);
+			int currentIndex = currentOrder.indexOf(column);
+			
+			if(currentIndex == i)
+				continue;
+			
+			if(currentIndex < 0)
+				throw new SQLException("Column missing while reordering: " + column);
+			
+			TableRow<?> row = rowsByName.get(column);
+			
+			String position = i == 0
+			                  ? " FIRST"
+			                  : " AFTER " + desiredOrder.get(i - 1);
+			
+			try(PreparedStatement stmt = db.prepareStatement(
+					db.getSession(),
+					"ALTER TABLE " + getName() + " MODIFY COLUMN " +
+					column + " " + row.getSQLTypeStr() + position
+			))
+			{
+				stmt.execute();
+			}
+			
+			currentOrder.remove(currentIndex);
+			currentOrder.add(i, column);
 		}
 	}
 	

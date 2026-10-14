@@ -1,11 +1,13 @@
 package dev.zeith.db4j.rows;
 
 import dev.zeith.db4j.data.RowConstraints;
+import lombok.Getter;
 
 import java.sql.*;
 import java.util.EnumSet;
 import java.util.stream.Collectors;
 
+@Getter
 public class TableRow<DATA>
 {
 	protected final RowType<DATA> type;
