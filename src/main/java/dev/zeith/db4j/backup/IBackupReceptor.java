@@ -1,23 +1,31 @@
 package dev.zeith.db4j.backup;
 
+import lombok.*;
+import lombok.experimental.Delegate;
+
 import java.util.LinkedHashSet;
 import java.util.function.Function;
 
 public interface IBackupReceptor<E extends Exception>
-		extends AutoCloseable
+		extends IBackupReceptorBase<E>
 {
+	@Override
 	void dropTables()
 			throws E;
 	
+	@Override
 	void setTables(LinkedHashSet<String> copiedTables)
 			throws E;
 	
+	@Override
 	void useSqlCommand(String originCatalog, String sql)
 			throws E;
 	
+	@Override
 	void sqlCommand(String sql)
 			throws E;
 	
+	@Override
 	Batch<E> insertSql(String sql)
 			throws E;
 	
@@ -25,7 +33,7 @@ public interface IBackupReceptor<E extends Exception>
 	void close()
 			throws E;
 	
-	interface Batch<E extends Exception>
+	interface BatchBase<E extends Exception>
 			extends AutoCloseable
 	{
 		void addBatch()
@@ -34,6 +42,26 @@ public interface IBackupReceptor<E extends Exception>
 		void setObject(int i, Object object)
 				throws E;
 		
+		void executeBatch()
+				throws E;
+		
+		@Override
+		void close()
+				throws E;
+	}
+	
+	interface Batch<E extends Exception>
+			extends BatchBase<E>
+	{
+		@Override
+		void addBatch()
+				throws E;
+		
+		@Override
+		void setObject(int i, Object object)
+				throws E;
+		
+		@Override
 		void executeBatch()
 				throws E;
 		
