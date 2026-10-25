@@ -2,7 +2,7 @@ package dev.zeith.db4j.query;
 
 import dev.zeith.db4j.data.*;
 import dev.zeith.db4j.db.DatabaseTable;
-import dev.zeith.db4j.rows.TableRow;
+import dev.zeith.db4j.rows.*;
 import dev.zeith.db4j.util.SQLHelper;
 
 import java.sql.*;
@@ -219,6 +219,26 @@ public class QueryFilter
 		return qf;
 	}
 	
+	public <DATA> QueryFilter whereAND(TableRowValue<DATA> v)
+	{
+		return whereAND(v.row(), v.data(), ComparisonMode.EXACTLY);
+	}
+	
+	public <DATA> QueryFilter whereOR(TableRowValue<DATA> v)
+	{
+		return whereOR(v.row(), v.data(), ComparisonMode.EXACTLY);
+	}
+	
+	public <DATA> QueryFilter whereAND(TableRowValue<DATA> v, ComparisonMode mode)
+	{
+		return where(v.row(), v.data(), LogicMode.AND, mode);
+	}
+	
+	public <DATA> QueryFilter whereOR(TableRowValue<DATA> v, ComparisonMode mode)
+	{
+		return where(v.row(), v.data(), LogicMode.OR, mode);
+	}
+	
 	public <DATA> QueryFilter whereAND(TableRow<DATA> row, DATA data)
 	{
 		return whereAND(row, data, ComparisonMode.EXACTLY);
@@ -241,6 +261,8 @@ public class QueryFilter
 	
 	public <DATA> QueryFilter where(TableRow<DATA> row, DATA data, LogicMode logic, ComparisonMode compare)
 	{
+		if(data == null)
+			return whereIsNull(row, logic);
 		QueryFilter qf = copy();
 		qf.query = query + (query.isEmpty() ? "" : " " + logic.name() + " ") + row.name + " " + compare.sql + " ?";
 		qf.params.add(new ParamPair<>(row, data));
@@ -281,7 +303,7 @@ public class QueryFilter
 		return whereIsNotNull(row, LogicMode.OR);
 	}
 	
-	public <DATA> QueryFilter whereLike(TableRow<String> row, String pattern, LogicMode logic, LikeMode likeMode, boolean sanitizeWildcard)
+	public QueryFilter whereLike(TableRow<String> row, String pattern, LogicMode logic, LikeMode likeMode, boolean sanitizeWildcard)
 	{
 		if(pattern == null)
 			throw new IllegalArgumentException("Pattern cannot be null");

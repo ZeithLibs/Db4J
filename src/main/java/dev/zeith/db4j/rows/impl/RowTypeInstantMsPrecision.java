@@ -2,6 +2,7 @@ package dev.zeith.db4j.rows.impl;
 
 import dev.zeith.db4j.data.SQLDataType;
 import dev.zeith.db4j.rows.RowType;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.time.Instant;
@@ -15,7 +16,7 @@ public class RowTypeInstantMsPrecision
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int parameterIndex, Instant value)
+	public void set(@NotNull PreparedStatement statement, int parameterIndex, Instant value)
 			throws SQLException
 	{
 		if(value == null)
@@ -25,7 +26,7 @@ public class RowTypeInstantMsPrecision
 	}
 	
 	@Override
-	public Instant get(ResultSet set, int columnIndex)
+	public Instant get(@NotNull ResultSet set, int columnIndex)
 			throws SQLException
 	{
 		long ms = set.getLong(columnIndex);
@@ -33,7 +34,7 @@ public class RowTypeInstantMsPrecision
 	}
 	
 	@Override
-	public Instant get(ResultSet set, String columnLabel)
+	public Instant get(@NotNull ResultSet set, @NotNull String columnLabel)
 			throws SQLException
 	{
 		long ms = set.getLong(columnLabel);

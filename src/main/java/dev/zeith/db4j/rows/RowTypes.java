@@ -4,6 +4,8 @@ import dev.zeith.db4j.data.SQLDataType;
 import dev.zeith.db4j.rows.impl.*;
 import dev.zeith.db4j.util.ULID;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 public class RowTypes
@@ -34,10 +36,13 @@ public class RowTypes
 	
 	public static final RowTypeDate DATE = new RowTypeDate();
 	public static final RowTypeTimestamp TIMESTAMP = new RowTypeTimestamp();
+	public static final RowType<Instant> INSTANT_AS_TIMESTAMP = TIMESTAMP.mapNotNull(Instant.class, Timestamp::toInstant, Timestamp::from);
 	
 	// ADVANCED TYPES
 	
 	public static final RowTypeBytes BLOB = new RowTypeBytes(SQLDataType.BLOB);
+	public static final RowTypeBytes MYSQL_MEDIUMBLOB = new RowTypeBytes(SQLDataType.MEDIUMBLOB);
+	public static final RowTypeBytes MYSQL_LONGBLOB = new RowTypeBytes(SQLDataType.LONGBLOB);
 	
 	public static final RowTypeInstantMsPrecision INSTANT = new RowTypeInstantMsPrecision();
 	public static final RowTypeInstantSecPrecision INSTANT_WITH_SECOND_PRECISION = new RowTypeInstantSecPrecision();

@@ -2,6 +2,7 @@ package dev.zeith.db4j.rows.impl;
 
 import dev.zeith.db4j.data.SQLDataType;
 import dev.zeith.db4j.rows.RowType;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 
@@ -14,7 +15,7 @@ public class RowTypeShort
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int parameterIndex, Short value)
+	public void set(@NotNull PreparedStatement statement, int parameterIndex, Short value)
 			throws SQLException
 	{
 		if(value == null)
@@ -24,14 +25,14 @@ public class RowTypeShort
 	}
 	
 	@Override
-	public Short get(ResultSet set, int columnIndex)
+	public Short get(@NotNull ResultSet set, int columnIndex)
 			throws SQLException
 	{
 		return set.getShort(columnIndex);
 	}
 	
 	@Override
-	public Short get(ResultSet set, String columnLabel)
+	public Short get(@NotNull ResultSet set, @NotNull String columnLabel)
 			throws SQLException
 	{
 		return set.getShort(columnLabel);

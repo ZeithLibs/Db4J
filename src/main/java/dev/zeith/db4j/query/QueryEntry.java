@@ -52,9 +52,7 @@ public class QueryEntry
 	public static QueryEntry fromResult(ResultSet set, TableRow<?>[] rowsIndexed) throws SQLException
 	{
 		Map<TableRow<?>, Object> rows = new HashMap<>();
-		for(int i = 0; i < rowsIndexed.length; ++i)
-			rows.put(rowsIndexed[i], rowsIndexed[i].get(set, rowsIndexed[i].name));
+		for(var row : rowsIndexed) rows.put(row, row.get(set, row.name));
 		return new QueryEntry(rows);
 	}
-	
 }

@@ -1,6 +1,6 @@
 package dev.zeith.db4j.rows;
 
-import dev.zeith.db4j.data.RowConstraints;
+import dev.zeith.db4j.data.*;
 import lombok.Getter;
 
 import java.sql.*;
@@ -63,18 +63,31 @@ public class TableRow<DATA>
 		return type.javaType;
 	}
 	
-	public void set(PreparedStatement statement, int columnIndex, DATA value) throws SQLException
+	public void set(PreparedStatement statement, int columnIndex, DATA value)
+			throws SQLException
 	{
 		type.set(statement, columnIndex, value);
 	}
 	
-	public DATA get(ResultSet set, int columnIndex) throws SQLException
+	public DATA get(ResultSet set, int columnIndex)
+			throws SQLException
 	{
 		return type.get(set, columnIndex);
 	}
 	
-	public DATA get(ResultSet set, String columnLabel) throws SQLException
+	public DATA get(ResultSet set, String columnLabel)
+			throws SQLException
 	{
 		return type.get(set, columnLabel);
+	}
+	
+	public TableRowValue<DATA> with(DATA value)
+	{
+		return new TableRowValue<>(this, value);
+	}
+	
+	public OrderByEntry ordered(boolean desc)
+	{
+		return new OrderByEntry(this, desc);
 	}
 }

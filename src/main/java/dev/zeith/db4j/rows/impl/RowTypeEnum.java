@@ -2,6 +2,7 @@ package dev.zeith.db4j.rows.impl;
 
 import dev.zeith.db4j.data.SQLDataType;
 import dev.zeith.db4j.rows.RowType;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 
@@ -19,7 +20,7 @@ public class RowTypeEnum<E extends Enum<E>>
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int parameterIndex, E value)
+	public void set(@NotNull PreparedStatement statement, int parameterIndex, E value)
 			throws SQLException
 	{
 		if(value == null)
@@ -48,7 +49,7 @@ public class RowTypeEnum<E extends Enum<E>>
 	}
 	
 	@Override
-	public E get(ResultSet set, int columnIndex)
+	public E get(@NotNull ResultSet set, int columnIndex)
 			throws SQLException
 	{
 		if(this.type == SQLDataType.BYTE)
@@ -64,7 +65,7 @@ public class RowTypeEnum<E extends Enum<E>>
 	}
 	
 	@Override
-	public E get(ResultSet set, String columnLabel)
+	public E get(@NotNull ResultSet set, @NotNull String columnLabel)
 			throws SQLException
 	{
 		if(this.type == SQLDataType.BYTE)

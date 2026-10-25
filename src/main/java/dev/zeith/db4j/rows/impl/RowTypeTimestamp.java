@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 import dev.zeith.db4j.data.SQLDataType;
 import dev.zeith.db4j.rows.RowType;
+import org.jetbrains.annotations.NotNull;
 
 public class RowTypeTimestamp extends RowType<Timestamp>
 {
@@ -16,19 +17,19 @@ public class RowTypeTimestamp extends RowType<Timestamp>
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int parameterIndex, Timestamp value) throws SQLException
+	public void set(@NotNull PreparedStatement statement, int parameterIndex, Timestamp value) throws SQLException
 	{
 		statement.setTimestamp(parameterIndex, value);
 	}
 	
 	@Override
-	public Timestamp get(ResultSet set, int columnIndex) throws SQLException
+	public Timestamp get(@NotNull ResultSet set, int columnIndex) throws SQLException
 	{
 		return set.getTimestamp(columnIndex);
 	}
 	
 	@Override
-	public Timestamp get(ResultSet set, String columnLabel) throws SQLException
+	public Timestamp get(@NotNull ResultSet set, @NotNull String columnLabel) throws SQLException
 	{
 		return set.getTimestamp(columnLabel);
 	}

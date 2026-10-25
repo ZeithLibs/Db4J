@@ -2,6 +2,7 @@ package dev.zeith.db4j.rows.impl;
 
 import dev.zeith.db4j.data.*;
 import dev.zeith.db4j.rows.RowType;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 
@@ -14,7 +15,7 @@ public class RowTypeBytes
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int parameterIndex, byte[] value)
+	public void set(@NotNull PreparedStatement statement, int parameterIndex, byte[] value)
 			throws SQLException
 	{
 		if(value == null)
@@ -24,14 +25,14 @@ public class RowTypeBytes
 	}
 	
 	@Override
-	public byte[] get(ResultSet set, int columnIndex)
+	public byte[] get(@NotNull ResultSet set, int columnIndex)
 			throws SQLException
 	{
 		return set.getBytes(columnIndex);
 	}
 	
 	@Override
-	public byte[] get(ResultSet set, String columnLabel)
+	public byte[] get(@NotNull ResultSet set, @NotNull String columnLabel)
 			throws SQLException
 	{
 		return set.getBytes(columnLabel);

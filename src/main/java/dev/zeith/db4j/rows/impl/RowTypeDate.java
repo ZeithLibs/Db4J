@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import dev.zeith.db4j.data.SQLDataType;
 import dev.zeith.db4j.rows.RowType;
+import org.jetbrains.annotations.NotNull;
 
 public class RowTypeDate extends RowType<Date>
 {
@@ -16,19 +17,19 @@ public class RowTypeDate extends RowType<Date>
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int parameterIndex, Date value) throws SQLException
+	public void set(@NotNull PreparedStatement statement, int parameterIndex, Date value) throws SQLException
 	{
 		statement.setDate(parameterIndex, value);
 	}
 	
 	@Override
-	public Date get(ResultSet set, int columnIndex) throws SQLException
+	public Date get(@NotNull ResultSet set, int columnIndex) throws SQLException
 	{
 		return set.getDate(columnIndex);
 	}
 	
 	@Override
-	public Date get(ResultSet set, String columnLabel) throws SQLException
+	public Date get(@NotNull ResultSet set, @NotNull String columnLabel) throws SQLException
 	{
 		return set.getDate(columnLabel);
 	}

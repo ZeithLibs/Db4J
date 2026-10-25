@@ -1,6 +1,7 @@
 package dev.zeith.db4j.rows.impl;
 
 import dev.zeith.db4j.rows.RowType;
+import org.jetbrains.annotations.*;
 
 import java.sql.*;
 import java.util.function.Function;
@@ -9,10 +10,10 @@ public class RowTypeMappedNullChecked<SRC, DST>
 		extends RowType<DST>
 {
 	protected final RowType<SRC> src;
-	protected final Function<SRC, DST> mapper;
-	protected final Function<DST, SRC> unmapper;
+	protected final Function<@NotNull SRC, @Nullable DST> mapper;
+	protected final Function<@NotNull DST, @Nullable SRC> unmapper;
 	
-	public RowTypeMappedNullChecked(RowType<SRC> src, Class<DST> javaType, Function<SRC, DST> mapper, Function<DST, SRC> unmapper)
+	public RowTypeMappedNullChecked(RowType<SRC> src, Class<DST> javaType, Function<@NotNull SRC, @Nullable DST> mapper, Function<@NotNull DST, @Nullable SRC> unmapper)
 	{
 		super(src.type, javaType);
 		this.src = src;
@@ -21,14 +22,14 @@ public class RowTypeMappedNullChecked<SRC, DST>
 	}
 	
 	@Override
-	public void set(PreparedStatement statement, int parameterIndex, DST value)
+	public void set(@NotNull PreparedStatement statement, int parameterIndex, DST value)
 			throws SQLException
 	{
 		src.set(statement, parameterIndex, value != null ? unmapper.apply(value) : null);
 	}
 	
 	@Override
-	public DST get(ResultSet set, int columnIndex)
+	public DST get(@NotNull ResultSet set, int columnIndex)
 			throws SQLException
 	{
 		SRC s = src.get(set, columnIndex);
@@ -36,7 +37,7 @@ public class RowTypeMappedNullChecked<SRC, DST>
 	}
 	
 	@Override
-	public DST get(ResultSet set, String columnLabel)
+	public DST get(@NotNull ResultSet set, @NotNull String columnLabel)
 			throws SQLException
 	{
 		SRC s = src.get(set, columnLabel);

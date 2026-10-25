@@ -1,7 +1,7 @@
 package dev.zeith.db4j.db;
 
 import dev.zeith.db4j.data.RowConstraints;
-import dev.zeith.db4j.rows.TableRow;
+import dev.zeith.db4j.rows.*;
 
 import java.util.*;
 
@@ -15,6 +15,11 @@ public class InsertMap
 	
 	public InsertMap()
 	{
+	}
+	
+	public <T> void insert(TableRowValue<T> v)
+	{
+		insert(v.row(), v.data());
 	}
 	
 	public <T> void insert(TableRow<T> row, T data)

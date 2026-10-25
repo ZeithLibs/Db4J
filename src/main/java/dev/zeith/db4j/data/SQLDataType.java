@@ -19,6 +19,8 @@ public enum SQLDataType
 	VARCHAR("VARCHAR", Types.VARCHAR, "Array of characters"),
 	BINARY("BINARY", Types.BINARY, "Holds binary data."),
 	BLOB("BLOB", Types.BLOB, "Holds binary data."),
+	MEDIUMBLOB("MEDIUMBLOB", Types.BLOB, "[MySQL] Holds binary data, up to 16 MB."),
+	LONGBLOB("LONGBLOB", Types.BLOB, "[MySQL] Holds binary data, up to 4 GB."),
 	DATE("DATE", Types.DATE, "A calendar date (year, month, day) without time."),
 	TIMESTAMP("TIMESTAMP", Types.TIMESTAMP, "A date and time value with nanosecond precision."),
 	;
