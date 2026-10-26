@@ -3,7 +3,6 @@ package dev.zeith.db4j.util;
 import org.jetbrains.annotations.Contract;
 
 import java.nio.ByteBuffer;
-import java.sql.SQLException;
 import java.util.UUID;
 
 public class UUIDHelper
@@ -23,12 +22,11 @@ public class UUIDHelper
 	
 	@Contract("null -> null; !null -> !null")
 	public static UUID fromBytes16(byte[] bytes)
-			throws SQLException
 	{
 		if(bytes == null) return null;
 		
 		if(bytes.length != 16)
-			throw new SQLException("Invalid UUID length: " + bytes.length);
+			throw new IllegalArgumentException("Invalid UUID length: " + bytes.length);
 		
 		ByteBuffer buf = ByteBuffer.wrap(bytes);
 		
