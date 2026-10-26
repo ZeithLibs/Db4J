@@ -2,7 +2,7 @@ package dev.zeith.db4j.rows.impl;
 
 import dev.zeith.db4j.data.SQLDataType;
 import dev.zeith.db4j.rows.RowType;
-import dev.zeith.db4j.util.SQLHelper;
+import dev.zeith.db4j.util.UUIDHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
@@ -23,20 +23,20 @@ public class RowTypeUUIDAsBinary
 		if(value == null)
 			statement.setNull(parameterIndex, type.getSqlType());
 		else
-			statement.setBytes(parameterIndex, SQLHelper.uuidToBytes(value));
+			statement.setBytes(parameterIndex, UUIDHelper.toBytes16(value));
 	}
 	
 	@Override
 	public UUID get(@NotNull ResultSet set, int columnIndex)
 			throws SQLException
 	{
-		return SQLHelper.bytesToUuid(set.getBytes(columnIndex));
+		return UUIDHelper.fromBytes16(set.getBytes(columnIndex));
 	}
 	
 	@Override
 	public UUID get(@NotNull ResultSet set, @NotNull String columnLabel)
 			throws SQLException
 	{
-		return SQLHelper.bytesToUuid(set.getBytes(columnLabel));
+		return UUIDHelper.fromBytes16(set.getBytes(columnLabel));
 	}
 }

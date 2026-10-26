@@ -2,11 +2,41 @@ package dev.zeith.db4j.util;
 
 import org.jetbrains.annotations.Contract;
 
+import java.nio.ByteBuffer;
+import java.sql.SQLException;
 import java.util.UUID;
 
 public class UUIDHelper
 {
 	private static final char[] HEX = "0123456789abcdef".toCharArray();
+	
+	@Contract("null -> null; !null -> !null")
+	public static byte[] toBytes16(UUID uuid)
+	{
+		if(uuid == null) return null;
+		
+		ByteBuffer buf = ByteBuffer.allocate(16);
+		buf.putLong(uuid.getMostSignificantBits());
+		buf.putLong(uuid.getLeastSignificantBits());
+		return buf.array();
+	}
+	
+	@Contract("null -> null; !null -> !null")
+	public static UUID fromBytes16(byte[] bytes)
+			throws SQLException
+	{
+		if(bytes == null) return null;
+		
+		if(bytes.length != 16)
+			throw new SQLException("Invalid UUID length: " + bytes.length);
+		
+		ByteBuffer buf = ByteBuffer.wrap(bytes);
+		
+		return new UUID(
+				buf.getLong(),
+				buf.getLong()
+		);
+	}
 	
 	@Contract("null -> null; !null -> !null")
 	public static String toString32(UUID uuid)

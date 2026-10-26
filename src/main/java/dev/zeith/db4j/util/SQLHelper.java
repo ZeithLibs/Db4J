@@ -3,9 +3,8 @@ package dev.zeith.db4j.util;
 import dev.zeith.db4j.data.SQLDataType;
 import dev.zeith.db4j.util.sqlite.SQLiteExceptionHelper;
 
-import java.nio.ByteBuffer;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.OptionalInt;
 
 public class SQLHelper
 {
@@ -36,31 +35,6 @@ public class SQLHelper
 		}
 		
 		throw e;
-	}
-	
-	public static byte[] uuidToBytes(UUID uuid)
-	{
-		ByteBuffer buf = ByteBuffer.allocate(16);
-		buf.putLong(uuid.getMostSignificantBits());
-		buf.putLong(uuid.getLeastSignificantBits());
-		return buf.array();
-	}
-	
-	public static UUID bytesToUuid(byte[] bytes)
-			throws SQLException
-	{
-		if(bytes == null)
-			return null;
-		
-		if(bytes.length != 16)
-			throw new SQLException("Invalid UUID length: " + bytes.length);
-		
-		ByteBuffer buf = ByteBuffer.wrap(bytes);
-		
-		return new UUID(
-				buf.getLong(),
-				buf.getLong()
-		);
 	}
 	
 	public static String escapeSqlLikePattern(String input)
